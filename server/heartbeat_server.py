@@ -1,5 +1,9 @@
+
+import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
- # ...existing code...
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
 class HeartbeatHandler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -10,10 +14,14 @@ class HeartbeatHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b'Heartbeat received')
 
-def run(server_class=HTTPServer, handler_class=HeartbeatHandler, port=8080):
-    server_address = ('', port)
+
+def run(server_class=HTTPServer, handler_class=HeartbeatHandler, ip=None, port=None):
+    # Get IP and port from environment or use defaults
+    ip = ip or os.getenv('SERVER_IP', 'localhost')
+    port = int(port or os.getenv('SERVER_PORT', 8900))
+    server_address = (ip, port)
     httpd = server_class(server_address, handler_class)
-    print(f'Starting heartbeat server on port {port}...')
+    print(f'Starting heartbeat server on {ip}:{port}...')
     httpd.serve_forever()
 
 if __name__ == '__main__':

@@ -1,0 +1,6 @@
+.env
+venv
+venv/*
+certs/*
+!certs/cert.pem
+!certs/ssh_key.pub

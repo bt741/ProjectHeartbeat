@@ -1,6 +1,10 @@
 import requests
+import os
+from dotenv import load_dotenv
 
-SERVER_URL = 'http://localhost:8080/'
+load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
+
+SERVER_URL = f"http://{os.getenv('SERVER_IP', 'localhost')}:{os.getenv('SERVER_PORT', '8900')}/"
 
 if __name__ == '__main__':
     try:
